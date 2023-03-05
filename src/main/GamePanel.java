@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import object.SuperObject;
 import tile.TileMenager;
 
 import javax.swing.*;
@@ -28,7 +29,9 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChecker cChecker = new CollisionChecker(this);
+    public AssetSetter aSetter= new AssetSetter(this);
     public Player player = new Player(this, keyH);
+    public SuperObject obj[]=new SuperObject[10];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -37,6 +40,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
+    public void setupGame(){
+        aSetter.setObject();
+    }
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -44,30 +50,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     @Override
-//    public void run() {
-//        double drawnInterval = 1000000000 / FPS; // 0,01666 SECONDS
-//        double nextDrawTime = System.nanoTime() + drawnInterval;
-//
-//        while (gameThread != null) {
-//
-//            update();
-//            repaint();
-//
-//            try {
-//                double remainingTime = nextDrawTime - System.nanoTime();
-//                remainingTime = remainingTime / 1000000;
-//
-//                if (remainingTime < 0) {
-//                    remainingTime = 0;
-//                }
-//
-//                Thread.sleep((long) remainingTime);
-//                nextDrawTime += drawnInterval;
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
     public void run() {
         double drawnInterval = 1000000000 / FPS; // 0,01666 SECONDS
         double delta = 0;
@@ -102,7 +84,17 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        //TILE
         tileM.draw(g2);
+
+        //OBJECT
+        for(int i=0;i<obj.length;i++){
+            if(obj[i] !=null){
+                obj[i].draw(g2,this);
+            }
+        }
+
+        //PLAYER
         player.draw(g2);
 
         g2.dispose();
