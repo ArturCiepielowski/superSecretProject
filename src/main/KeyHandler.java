@@ -4,9 +4,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
+    GamePanel gp;
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     //DEBUG
-    boolean checkDrawTime =false;
+    boolean checkDrawTime = false;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp = gp;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -16,42 +22,48 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W) {
-            upPressed=true;
+            upPressed = true;
         }
         if (code == KeyEvent.VK_S) {
-            downPressed=true;
+            downPressed = true;
         }
         if (code == KeyEvent.VK_A) {
-            leftPressed=true;
+            leftPressed = true;
         }
         if (code == KeyEvent.VK_D) {
-            rightPressed=true;
+            rightPressed = true;
+        }
+        if (code == KeyEvent.VK_P) {
+            if (gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if (gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-int code =e.getKeyCode();
+        int code = e.getKeyCode();
         if (code == KeyEvent.VK_W) {
-            upPressed=false;
+            upPressed = false;
         }
         if (code == KeyEvent.VK_S) {
-            downPressed=false;
+            downPressed = false;
         }
         if (code == KeyEvent.VK_A) {
-            leftPressed=false;
+            leftPressed = false;
         }
         if (code == KeyEvent.VK_D) {
-            rightPressed=false;
+            rightPressed = false;
         }
 
         //DEBUG
         if (code == KeyEvent.VK_T) {
-            if(checkDrawTime==false){
-                checkDrawTime=true;
-            }
-            else if(checkDrawTime==true){
-                checkDrawTime =false;
+            if (checkDrawTime == false) {
+                checkDrawTime = true;
+            } else if (checkDrawTime == true) {
+                checkDrawTime = false;
             }
 
         }
