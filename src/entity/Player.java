@@ -44,14 +44,14 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
 
-        up1=setup("boy_up_1");
-        up2=setup("boy_up_2");
-        down1=setup("boy_down_1");
-        down2=setup("boy_down_2");
-        left1=setup("boy_left_1");
-        left2=setup("boy_left_2");
-        right1=setup("boy_right_1");
-        right2=setup("boy_right_2");
+        up1=setup("LinaBackWalkFeetRight"); //boy up1
+        up2=setup("LinaBackWalkFeetLeft"); //boy up2
+        down1=setup("LinaFrontWalkFeetLeft");//boy_down_1
+        down2=setup("LinaFrontWalkFeetRight");//boy_down_2
+        left1=setup("LinaLeftStanding");//boy_left_1
+        left2=setup("LinaLeftWalking");//boy_left_2
+        right1=setup("LinaRightStanding");//boy_right_1
+        right2=setup("LinaRightWalking");//boy_right_2
     }
 
     public BufferedImage setup(String imageName){
