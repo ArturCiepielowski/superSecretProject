@@ -33,7 +33,7 @@ public class NPC_Xellos extends Entity {
 
     public void setDialogue() {
         dialogues[0] = "Hello I am Xellos a mysterious priest.";
-        dialogues[1] = "If you can fool your friends, you can\nfool your enemies";
+        dialogues[1] = "If you can fool your friends, you can fool your\nenemies";
         dialogues[2] = "Oh, I make it a point to never lie";
         dialogues[3] = "Can't say. That is a secret!";
     }
