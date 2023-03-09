@@ -16,6 +16,7 @@ public class NPC_Xellos extends Entity {
         direction = "down";
         speed = 1;
         getImage();
+        setDialogue();
     }
 
     public void getImage() {
@@ -28,6 +29,13 @@ public class NPC_Xellos extends Entity {
         left2 = setup("/npc/boy_left_2");//boy_left_2
         right1 = setup("/npc/boy_right_1");//boy_right_1
         right2 = setup("/npc/boy_right_2");//boy_right_2
+    }
+
+    public void setDialogue() {
+        dialogues[0] = "Hello I am Xellos a mysterious priest.";
+        dialogues[1] = "If you can fool your friends, you can\nfool your enemies";
+        dialogues[2] = "Oh, I make it a point to never lie";
+        dialogues[3] = "Can't say. That is a secret!";
     }
 
     public void setAction() {
@@ -50,6 +58,10 @@ public class NPC_Xellos extends Entity {
             actionLockCounter = 0;
         }
 
+    }
+
+    public void speak() {
+        super.speak();
     }
 
 

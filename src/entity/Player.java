@@ -45,14 +45,14 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
 
-        up1=setup("/player/LinaBackWalkFeetRight"); //boy up1
-        up2=setup("/player/LinaBackWalkFeetLeft"); //boy up2
-        down1=setup("/player/LinaFrontWalkFeetLeft");//boy_down_1
-        down2=setup("/player/LinaFrontWalkFeetRight");//boy_down_2
-        left1=setup("/player/LinaLeftStanding");//boy_left_1
-        left2=setup("/player/LinaLeftWalking");//boy_left_2
-        right1=setup("/player/LinaRightStanding");//boy_right_1
-        right2=setup("/player/LinaRightWalking");//boy_right_2
+        up1 = setup("/player/LinaBackWalkFeetRight"); //boy up1
+        up2 = setup("/player/LinaBackWalkFeetLeft"); //boy up2
+        down1 = setup("/player/LinaFrontWalkFeetLeft");//boy_down_1
+        down2 = setup("/player/LinaFrontWalkFeetRight");//boy_down_2
+        left1 = setup("/player/LinaLeftStanding");//boy_left_1
+        left2 = setup("/player/LinaLeftWalking");//boy_left_2
+        right1 = setup("/player/LinaRightStanding");//boy_right_1
+        right2 = setup("/player/LinaRightWalking");//boy_right_2
     }
 
 
@@ -76,7 +76,7 @@ public class Player extends Entity {
             int objIndex = gp.cChecker.checkObject(this, true);
             pickUpObject(objIndex);
             //CHECK NPC COLLISION
-            int npcIndex = gp.cChecker.checkEntity(this,gp.npc);
+            int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
             interactNPC(npcIndex);
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (collisionOn == false) {
@@ -113,11 +113,18 @@ public class Player extends Entity {
 
         }
     }
-public void interactNPC(int i){
-    if (i != 999) {
 
+    public void interactNPC(int i) {
+        if (i != 999) {
+            if(gp.keyH.enterPressed ==true){
+                gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
+
+        }
+        gp.keyH.enterPressed=false;
     }
-}
+
     public void draw(Graphics2D g2) {
 //        g2.setColor(Color.white);
 //        g2.fillRect(x, y, gp.tileSize, gp.tileSize);
