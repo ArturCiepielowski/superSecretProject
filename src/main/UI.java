@@ -16,8 +16,7 @@ public class UI {
     int messageCounter = 0;
     public boolean gameFinished = false;
     public String currentDialogue = "";
-    double playTime;
-    DecimalFormat dFormat = new DecimalFormat("#0.00");
+public int comandNum =0;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -44,6 +43,10 @@ public class UI {
         g2.setFont(eagleLake_40);
         g2.setColor(Color.white);
 
+        //TITLE STATE
+        if (gp.gameState == gp.titleState) {
+            drawTitleScreen();
+        }
         //PLAY STATE
         if (gp.gameState == gp.playState) {
 
@@ -58,6 +61,67 @@ public class UI {
         }
     }
 
+    public void drawTitleScreen() {
+        g2.setColor(new Color(0, 0, 0));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        //TITLE NAME
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+        String text = "Slayers";
+        int x = getXforCenteredText(text);
+        int y = gp.tileSize * 3;
+        //SHADOW
+        g2.setColor(Color.gray);
+        g2.drawString(text, x+4, y+4);
+        //MAIN COLOR
+        g2.setColor(Color.yellow);
+        g2.drawString(text, x, y);
+
+
+        String subText = "Xellos lost stories";
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 56F));
+        x = getXforCenteredText(subText);
+
+        //SHADOW
+        g2.setColor(new Color(84,68,135));
+        g2.drawString(subText, x+4, y + 99);
+        //MAIN COLOR
+        g2.setColor(new Color(196,179,228));
+        g2.drawString(subText, x, y + 96);
+
+        //XELLOS CHARACTER
+        g2.setColor(Color.white);
+        x=gp.screenWidth/2-(gp.tileSize*2)/2;
+        y+=gp.tileSize*2+10;
+        g2.drawImage(gp.xellos.down1,x,y,gp.tileSize*2,gp.tileSize*2,null);
+
+        //MENU
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+        text="NEW GAME";
+        x=getXforCenteredText(text);
+        y+=gp.tileSize*3.5;
+        g2.drawString(text,x,y);
+        if(comandNum ==0){
+            g2.drawString(">",x-gp.tileSize,y);
+        }
+
+        text="LOAD GAME";
+        x=getXforCenteredText(text);
+        y+=gp.tileSize;
+        g2.drawString(text,x,y);
+        if(comandNum ==1){
+            g2.drawString(">",x-gp.tileSize,y);
+        }
+
+        text="QUIT";
+        x=getXforCenteredText(text);
+        y+=gp.tileSize;
+        g2.drawString(text,x,y);
+        if(comandNum ==2){
+            g2.drawString(">",x-gp.tileSize,y);
+        }
+
+    }
+
     public void drawPauseScreen() {
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
         String text = "PAUSE";
@@ -70,11 +134,11 @@ public class UI {
     public void drawDialogueScreen() {
         //WINDOW
 
-        int x = gp.tileSize /2 -20;
+        int x = gp.tileSize / 2 - 20;
 //        int x = gp.tileSize * 2;
         int y = gp.tileSize * 8;
 //        int y = gp.tileSize / 2;
-        int width = gp.screenWidth /*- (gp.tileSize * 4)*/-5;
+        int width = gp.screenWidth /*- (gp.tileSize * 4)*/ - 5;
         int height = gp.tileSize * 4;
         drawSubWindows(x, y, width, height);
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24F));
@@ -96,7 +160,8 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
     }
-    public void drawXellos(){
+
+    public void drawXellos() {
 
     }
 
