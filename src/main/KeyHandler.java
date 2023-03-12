@@ -23,29 +23,65 @@ public class KeyHandler implements KeyListener {
         int code = e.getKeyCode();
         //TITLE STATE
         if (gp.gameState == gp.titleState) {
+            if (gp.ui.titleScreenState == 0) {
+                if (code == KeyEvent.VK_W) {
+                    gp.ui.comandNum--;
+                    if (gp.ui.comandNum < 0) {
+                        gp.ui.comandNum = 2;
+                    }
+                }
+                if (code == KeyEvent.VK_S) {
+                    gp.ui.comandNum++;
+                    if (gp.ui.comandNum > 2) {
+                        gp.ui.comandNum = 0;
+                    }
+                }
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.ui.comandNum == 0) {
+                        gp.ui.titleScreenState = 1;
 
-            if (code == KeyEvent.VK_W) {
-                gp.ui.comandNum--;
-                if (gp.ui.comandNum < 0) {
-                    gp.ui.comandNum = 2;
+                    }
+                    if (gp.ui.comandNum == 1) {
+                        //add later
+                    }
+                    if (gp.ui.comandNum == 2) {
+                        System.exit(0);
+                    }
                 }
             }
-            if (code == KeyEvent.VK_S) {
-                gp.ui.comandNum++;
-                if (gp.ui.comandNum > 2) {
-                    gp.ui.comandNum = 0;
+
+            else if (gp.ui.titleScreenState == 1) {
+                if (code == KeyEvent.VK_W) {
+                    gp.ui.comandNum--;
+                    if (gp.ui.comandNum < 0) {
+                        gp.ui.comandNum = 3;
+                    }
                 }
-            }
-            if(code ==KeyEvent.VK_ENTER){
-                if(gp.ui.comandNum==0){
-                    gp.gameState=gp.playState;
-                    gp.playMusic(0);
+                if (code == KeyEvent.VK_S) {
+                    gp.ui.comandNum++;
+                    if (gp.ui.comandNum > 3) {
+                        gp.ui.comandNum = 0;
+                    }
                 }
-                if(gp.ui.comandNum==1){
-                    //add later
-                }
-                if(gp.ui.comandNum==2){
-                    System.exit(0);
+                if (code == KeyEvent.VK_ENTER) {
+                    if (gp.ui.comandNum == 0) {
+                        System.out.println("Do some Lina stuff");
+                        gp.gameState = gp.playState;
+                        gp.playMusic(0);
+                    }
+                    if (gp.ui.comandNum == 1) {
+                        System.out.println("Do some Zelgradis stuff");
+                        gp.gameState = gp.playState;
+                        gp.playMusic(0);
+                    }
+                    if (gp.ui.comandNum == 2) {
+                        System.out.println("Do some Amelia stuff");
+                        gp.gameState = gp.playState;
+                        gp.playMusic(0);
+                    }
+                    if (gp.ui.comandNum == 3) {
+                        gp.ui.titleScreenState = 0;
+                    }
                 }
             }
         }
