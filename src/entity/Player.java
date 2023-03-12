@@ -15,7 +15,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-
+    int standCounter = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -41,6 +41,11 @@ public class Player extends Entity {
         worldY = gp.tileSize * 21;
         speed = 4;
         direction = "down";
+
+        //PLAYER STATUS
+
+        maxLife = 6;
+        life = maxLife;
     }
 
     public void getPlayerImage() {
@@ -104,6 +109,12 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
+        } else {
+            standCounter++;
+            if (standCounter == 20) {
+                spriteNum = 1;
+                standCounter = 0;
+            }
         }
 
     }
@@ -116,13 +127,13 @@ public class Player extends Entity {
 
     public void interactNPC(int i) {
         if (i != 999) {
-            if(gp.keyH.enterPressed ==true){
+            if (gp.keyH.enterPressed == true) {
                 gp.gameState = gp.dialogueState;
                 gp.npc[i].speak();
             }
 
         }
-        gp.keyH.enterPressed=false;
+        gp.keyH.enterPressed = false;
     }
 
     public void draw(Graphics2D g2) {
