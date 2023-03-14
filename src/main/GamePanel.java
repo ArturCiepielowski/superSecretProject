@@ -3,11 +3,14 @@ package main;
 import entity.Entity;
 import entity.NPC_Xellos;
 import entity.Player;
-import object.SuperObject;
+
 import tile.TileMenager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -34,21 +37,22 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    public EventHandler eHandler = new EventHandler(this);
     Thread gameThread;
 
     //ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public Entity xellos = new NPC_Xellos(this);
-    public SuperObject obj[] = new SuperObject[10];
+    public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
-
+    ArrayList<Entity> entityList = new ArrayList<>();
 
     //GAME STATE
     public int gameState;
-    public final int titleState =0;
+    public final int titleState = 0;
     public final int playState = 1;
     public final int pauseState = 2;
-    public final int dialogueState =3;
+    public final int dialogueState = 3;
 
 
     public GamePanel() {
@@ -127,29 +131,46 @@ public class GamePanel extends JPanel implements Runnable {
         }
         drawStart = System.nanoTime();
         //TITLE SCREEN
-        if(gameState ==titleState){
-ui.draw(g2);
+        if (gameState == titleState) {
+            ui.draw(g2);
         }
         //OTHERS
-        else{
+        else {
+
+
             //TILE
             tileM.draw(g2);
+            //ADD ENTITIES TO THE LIST
+            entityList.add(player);
 
-            //OBJECT
-            for (int i = 0; i < obj.length; i++) {
-                if (obj[i] != null) {
-                    obj[i].draw(g2, this);
-                }
-            }
-            // NPC
             for (int i = 0; i < npc.length; i++) {
                 if (npc[i] != null) {
-                    npc[i].draw(g2);
+                    entityList.add(npc[i]);
+                }
+            }
+            for (int i = 0; i < obj.length; i++) {
+                if (obj[i] != null) {
+                    entityList.add(obj[i]);
                 }
             }
 
-            //PLAYER
-            player.draw(g2);
+            //SORT
+            Collections.sort(entityList, new Comparator<Entity>() {
+                @Override
+                public int compare(Entity e1, Entity e2) {
+                    int result = Integer.compare(e1.worldY, e2.worldY);
+                    return result;
+                }
+            });
+
+            //DRAW ENTITIES
+            for (int i = 0; i < entityList.size(); i++) {
+                entityList.get(i).draw(g2);
+            }
+            //EMPTY ENTITY LIST
+
+                entityList.clear();
+
 
             //UI
             ui.draw(g2);

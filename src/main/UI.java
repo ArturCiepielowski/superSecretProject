@@ -1,7 +1,8 @@
 package main;
 
+import entity.Entity;
 import object.OBJ_Heart;
-import object.SuperObject;
+
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -36,7 +37,7 @@ public class UI {
         }
 
         //CREATE HUD OBJECT
-        SuperObject heart = new OBJ_Heart(gp);
+        Entity heart = new OBJ_Heart(gp);
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
@@ -133,7 +134,7 @@ public class UI {
             g2.setColor(Color.white);
             x = gp.screenWidth / 2 - (gp.tileSize * 2) / 2;
             y += gp.tileSize * 2 + 10;
-            g2.drawImage(gp.xellos.down1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+            g2.drawImage(gp.xellos.stand1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
 
             //MENU
             g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
