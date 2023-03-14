@@ -12,8 +12,8 @@ public class Entity {
     GamePanel gp;
     public int worldX, worldY;
     public int speed;
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
-    public String direction;
+    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2,stand1;
+    public String direction="down";
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
@@ -23,6 +23,9 @@ public class Entity {
     public int actionLockCounter = 0;
     String dialogues[]=new String[20];
     int dialogueIndex =0;
+    public BufferedImage image, image2, image3;
+    public String name;
+    public boolean collision = false;
 
     //CHARACTER status
     public int maxLife;
@@ -41,7 +44,7 @@ public class Entity {
         gp.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
 
-        switch(gp.player.direction){
+        switch(direction){
             case "up":
                 direction="down";
                 break;
