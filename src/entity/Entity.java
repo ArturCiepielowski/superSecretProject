@@ -10,27 +10,33 @@ import java.io.IOException;
 
 public class Entity {
     GamePanel gp;
-    public int worldX, worldY;
-    public int speed;
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2, stand1;
-    public String direction = "down";
-
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
+    public BufferedImage attackUp1, attackUp2, attackDown1,
+            attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage image, image2, image3;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
-    public int actionLockCounter = 0;
-    public boolean invincible = false;
-    public int invincibleCounter = 0;
     String dialogues[] = new String[20];
-    int dialogueIndex = 0;
-    public BufferedImage image, image2, image3;
-    public String name;
-    public boolean collision = false;
-    public int type; // 0 = player, 1 =npc , 2= monster
 
-    //CHARACTER status
+    //STATE
+    public int worldX, worldY;
+    public String direction = "down";
+    public int spriteNum = 1;
+    int dialogueIndex = 0;
+    public boolean collision = false;
+    public boolean invincible = false;
+    public boolean attacking = false;
+
+    //COUNTER
+    public int spriteCounter = 0;
+    public int actionLockCounter = 0;
+    public int invincibleCounter = 0;
+    //CHARACTER ATTRIBUTES
+    public int type; // 0 = player, 1 =npc , 2= monster
+    public String name;
+    public int speed;
     public int maxLife;
     public int life;
 
@@ -78,7 +84,7 @@ public class Entity {
             if (gp.player.invincible == false) {
                 gp.player.life -= 1;
                 gp.player.invincible = true;
-            }else{
+            } else {
                 System.out.println("A hit!");
             }
         }
@@ -101,7 +107,7 @@ public class Entity {
         }
 
         spriteCounter++;
-        if(spriteCounter >12){
+        if (spriteCounter > 12) {
 
             if (spriteNum == 1) {
                 spriteNum = 2;
@@ -110,10 +116,16 @@ public class Entity {
             }
             spriteCounter = 0;
         }
+        if (invincible == true) {
+            invincibleCounter++;
+            if (invincibleCounter > 40) {
+                invincible = false;
+                invincibleCounter = 0;
+            }
+        }
+
 
     }
-
-
 
 
     public void draw(Graphics2D g2) {
@@ -161,17 +173,24 @@ public class Entity {
                     break;
 
             }
+
+            if (invincible == true) {
+                g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+            }
+
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
     }
 
 
-    public BufferedImage setup(String imagePath) {
+    public BufferedImage setup(String imagePath, int width, int height) {
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
         try {
             image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-            image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
+            image = uTool.scaleImage(image, width, height);
         } catch (IOException e) {
             e.printStackTrace();
         }
