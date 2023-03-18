@@ -21,15 +21,15 @@ public class NPC_Xellos extends Entity {
 
     public void getImage() {
 
-        up1 = setup("/npc/XellosBackWalkFeetRight"); //boy up1
-        up2 = setup("/npc/XellosBackWalkFeetLeft"); //boy up2
-        down1 = setup("/npc/XellosFrontWalkFeetLeft");//boy_down_1
-        down2 = setup("/npc/XellosFrontWalkFeetRight");//boy_down_2
-        left1 = setup("/npc/XellosRightStanding");//boy_left_1
-        left2 = setup("/npc/XellosRightWalking");//boy_left_2
-        right1 = setup("/npc/XellosLeftStanding");//boy_right_1
-        right2 = setup("/npc/XellosLeftWalking");//boy_right_2
-        stand1 = setup("/npc/XellosFrontStanding");
+        up1 = setup("/npc/XellosBackWalkFeetRight",gp.tileSize,gp.tileSize); //boy up1
+        up2 = setup("/npc/XellosBackWalkFeetLeft",gp.tileSize,gp.tileSize); //boy up2
+        down1 = setup("/npc/XellosFrontWalkFeetLeft",gp.tileSize,gp.tileSize);//boy_down_1
+        down2 = setup("/npc/XellosFrontWalkFeetRight",gp.tileSize,gp.tileSize);//boy_down_2
+        left1 = setup("/npc/XellosRightStanding",gp.tileSize,gp.tileSize);//boy_left_1
+        left2 = setup("/npc/XellosRightWalking",gp.tileSize,gp.tileSize);//boy_left_2
+        right1 = setup("/npc/XellosLeftStanding",gp.tileSize,gp.tileSize);//boy_right_1
+        right2 = setup("/npc/XellosLeftWalking",gp.tileSize,gp.tileSize);//boy_right_2
+        stand1 = setup("/npc/XellosFrontStanding",gp.tileSize,gp.tileSize);
     }
 
     public void setDialogue() {
