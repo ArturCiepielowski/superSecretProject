@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity xellos = new NPC_Xellos(this);
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
-    public Entity monster[]=new Entity[20];
+    public Entity monster[] = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();
 
     //GAME STATE
@@ -116,9 +116,14 @@ public class GamePanel extends JPanel implements Runnable {
                     npc[i].update();
                 }
             }
-            for (int i=0;i<monster.length; i++){
-                if(monster[i] != null){
-                   monster[i].update();
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    if (monster[i].alive == true&&monster[i].dying==false) {
+                        monster[i].update();
+                    }
+                    if (monster[i].alive == false) {
+                        monster[i] = null;
+                    }
                 }
             }
         }
@@ -183,7 +188,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
             //EMPTY ENTITY LIST
 
-                entityList.clear();
+            entityList.clear();
 
 
             //UI
