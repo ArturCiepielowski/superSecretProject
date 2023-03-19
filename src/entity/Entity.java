@@ -45,6 +45,19 @@ public class Entity {
     public int speed;
     public int maxLife;
     public int life;
+    public int strength;
+    public int dexterity;
+    public int attack;
+    public int defense;
+    public int exp;
+    public int level;
+    public int nextLevelExp;
+    public int coin;
+    public Entity currentWeapon;
+    public Entity currentShield;
+    //ITEM ATTRIBUTES
+    public int attackValue;
+    public int defenseValue;
 
     public Entity(GamePanel gp) {
         this.gp = gp;
@@ -93,10 +106,13 @@ public class Entity {
 
         if (this.type == 2 && contactPlayer == true) {
             if (gp.player.invincible == false) {
-                gp.player.life -= 1;
+                gp.playSE(6);
+                int damage = attack - gp.player.defense;
+                if (damage < 0) {
+                    damage = 0;
+                }
+                gp.player.life -= damage;
                 gp.player.invincible = true;
-            } else {
-                System.out.println("A hit!");
             }
         }
 
