@@ -3,6 +3,7 @@ package main;
 import entity.NPC_Xellos;
 import monster.MON_GreenSlime;
 import object.OBJ_Door;
+import object.OBJ_Key;
 
 
 public class AssetSetter {
@@ -13,7 +14,9 @@ public class AssetSetter {
     }
 
     public void setObject() {
-
+        gp.obj[0] = new OBJ_Key(gp);
+        gp.obj[0].worldX = gp.tileSize * 25;
+        gp.obj[0].worldY = gp.tileSize * 19;
     }
 
     public void setNPC() {
