@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UtilityTool;
+import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -10,6 +11,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Player extends Entity {
 
@@ -19,6 +21,8 @@ public class Player extends Entity {
     public final int screenY;
     int standCounter = 0;
     public boolean attackCanceled = false;
+    public ArrayList<Entity> inventory = new ArrayList<>();
+    public final int maxInventorySize = 20;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -40,6 +44,7 @@ public class Player extends Entity {
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues() {
@@ -61,6 +66,13 @@ public class Player extends Entity {
         currentShield = new OBJ_Shield_Wood(gp);
         attack = getAttack();
         defense = getDefense();
+    }
+
+    public void setItems() {
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add((new OBJ_Key(gp)));
+
     }
 
     public int getAttack() {
@@ -299,15 +311,15 @@ public class Player extends Entity {
         if (exp >= nextLevelExp) {
             level++;
             nextLevelExp = nextLevelExp * 2;
-            maxLife +=2;
+            maxLife += 2;
             strength++;
             dexterity++;
-            attack =getAttack();
-            defense=getDefense();
+            attack = getAttack();
+            defense = getDefense();
 
             gp.playSE(8);
-            gp.gameState=gp.dialogueState;
-            gp.ui.currentDialogue="You are level "+ level + "now\n"+ "You feel stronger!";
+            gp.gameState = gp.dialogueState;
+            gp.ui.currentDialogue = "You are level " + level + "now\n" + "You feel stronger!";
         }
     }
 
