@@ -46,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Entity obj[] = new Entity[10];
     public Entity npc[] = new Entity[10];
     public Entity monster[] = new Entity[20];
+    public ArrayList<Entity> projectileList = new ArrayList<>();
     ArrayList<Entity> entityList = new ArrayList<>();
 
     //GAME STATE
@@ -127,6 +128,16 @@ public class GamePanel extends JPanel implements Runnable {
                     }
                 }
             }
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    if (projectileList.get(i).alive == true ) {
+                        projectileList.get(i).update();
+                    }
+                    if (projectileList.get(i).alive == false) {
+                        projectileList.remove(i);
+                    }
+                }
+            }
         }
         if (gameState == pauseState) {
             //nothing
@@ -173,6 +184,11 @@ public class GamePanel extends JPanel implements Runnable {
                     entityList.add(monster[i]);
                 }
             }
+            for (int i = 0; i < projectileList.size(); i++) {
+                if (projectileList.get(i) != null) {
+                    entityList.add(projectileList.get(i));
+                }
+            }
 
             //SORT
             Collections.sort(entityList, new Comparator<Entity>() {
@@ -207,13 +223,13 @@ public class GamePanel extends JPanel implements Runnable {
             int y = 400;
             int lineHeight = 20;
             g2.drawString("WorldX" + player.worldX, x, y);
-            y+= lineHeight;
+            y += lineHeight;
             g2.drawString("WorldY" + player.worldY, x, y);
-            y+= lineHeight;
-            g2.drawString("Col" + (player.worldX+player.solidArea.x)/tileSize, x, y);
-            y+= lineHeight;
-            g2.drawString("Row" + (player.worldY+player.solidArea.y)/tileSize, x, y);
-            y+= lineHeight;
+            y += lineHeight;
+            g2.drawString("Col" + (player.worldX + player.solidArea.x) / tileSize, x, y);
+            y += lineHeight;
+            g2.drawString("Row" + (player.worldY + player.solidArea.y) / tileSize, x, y);
+            y += lineHeight;
             g2.drawString("Draw Time: " + passed, x, y);
 
         }
