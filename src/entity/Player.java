@@ -54,9 +54,9 @@ public class Player extends Entity {
         level = 1;
         maxLife = 6;
         life = maxLife;
-        maxMana=4;
-        mana=maxMana;
-        ammo=10;
+        maxMana = 4;
+        mana = maxMana;
+        ammo = 10;
         strength = 1;
         dexterity = 1;
         exp = 0;
@@ -209,10 +209,10 @@ public class Player extends Entity {
                 standCounter = 0;
             }
         }
-        if(gp.keyH.shotKeyPressed==true&& projectile.alive==false
-                && shotAvaibleCounter ==30&& projectile.haveResource(this)==true){
+        if (gp.keyH.shotKeyPressed == true && projectile.alive == false
+                && shotAvaibleCounter == 30 && projectile.haveResource(this) == true) {
             //SET DEFAULT COORDINATES, DIRECTION AND USE
-            projectile.set(worldX,worldY,direction,true,this);
+            projectile.set(worldX, worldY, direction, true, this);
 
             //SUBSTRACT THE COST
             projectile.substractResource(this);
@@ -230,6 +230,12 @@ public class Player extends Entity {
         }
         if (shotAvaibleCounter < 30) {
             shotAvaibleCounter++;
+        }
+        if(life >maxLife){
+            life = maxLife;
+        }
+        if(mana >maxMana){
+            mana = maxMana;
         }
     }
 
@@ -267,7 +273,7 @@ public class Player extends Entity {
             solidArea.height = attackArea.height;
             // Check monster collision with the updated worldX, worldY and solidArea
             int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-            damageMonster(monsterIndex,attack);
+            damageMonster(monsterIndex, attack);
 
             //After checking collision restore the original data
             worldX = currentWorldX;
@@ -284,17 +290,26 @@ public class Player extends Entity {
 
     public void pickUpObject(int i) {
         if (i != 999) {
-            String text;
-
-            if (inventory.size() != maxInventorySize) {
-                inventory.add(gp.obj[i]);
-                gp.playSE(1);
-                text = "Got a " + gp.obj[i].name + "!";
-            } else {
-                text = "You cannot carry any more!";
+            //PICKUP ONLY ITEMS
+            if (gp.obj[i].type == type_pickupOnly) {
+            gp.obj[i].use(this);
+            gp.obj[i]=null;
             }
-            gp.ui.addMessage(text);
-            gp.obj[i] = null;
+            //INVENTORY ITEMS
+            else {
+                String text;
+
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(gp.obj[i]);
+                    gp.playSE(1);
+                    text = "Got a " + gp.obj[i].name + "!";
+                } else {
+                    text = "You cannot carry any more!";
+                }
+                gp.ui.addMessage(text);
+                gp.obj[i] = null;
+            }
+
         }
     }
 
@@ -311,7 +326,7 @@ public class Player extends Entity {
 
     public void contactMonster(int i) {
         if (i != 999) {
-            if (invincible == false&& gp.monster[i].dying ==false) {
+            if (invincible == false && gp.monster[i].dying == false) {
                 gp.playSE(6);
                 int damage = gp.monster[i].attack - defense;
                 if (damage < 0) {
@@ -379,8 +394,8 @@ public class Player extends Entity {
                 defense = getDefense();
             }
             if (selectedItem.type == type_consumable) {
-             selectedItem.use(this);
-             inventory.remove(itemIndex);
+                selectedItem.use(this);
+                inventory.remove(itemIndex);
             }
         }
     }

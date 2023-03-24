@@ -61,6 +61,7 @@ public class Entity {
     public Entity currentShield;
     public Projectile projectile;
     //ITEM ATTRIBUTES
+    public int value;
     public int attackValue;
     public int defenseValue;
     public String description = "";
@@ -74,6 +75,7 @@ public class Entity {
     public final int type_axe = 4;
     public final int type_shield = 5;
     public final int type_consumable = 6;
+    public final int type_pickupOnly = 7;
 
 
     public Entity(GamePanel gp) {
@@ -113,6 +115,21 @@ public class Entity {
 
     public void use(Entity entity) {
 
+    }
+
+    public void checkDrop() {
+
+    }
+
+    public void dropItem(Entity droppedItem) {
+        for (int i = 0; i < gp.obj.length; i++) {
+            if (gp.obj[i] == null) {
+                gp.obj[i] = droppedItem;
+                gp.obj[i].worldX = worldX; // the dead monster's worldX
+                gp.obj[i].worldY = worldY;
+                break;
+            }
+        }
     }
 
     public void update() {
@@ -180,135 +197,136 @@ public class Entity {
 
         }
     }
-        public void draw (Graphics2D g2){
-            BufferedImage image = null;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
-                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY &&
-                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY) {
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-                switch (direction) {
-                    case "up":
-                        if (spriteNum == 1) {
-                            image = up1;
-                        }
-                        if (spriteNum == 2) {
-                            image = up2;
-                        }
-                        break;
-                    case "down":
-                        if (spriteNum == 1) {
-                            image = down1;
-                        }
-                        if (spriteNum == 2) {
-                            image = down2;
-                        }
-                        break;
-                    case "left":
-                        if (spriteNum == 1) {
-                            image = left1;
-                        }
-                        if (spriteNum == 2) {
-                            image = left2;
-                        }
-                        break;
-                    case "right":
-                        if (spriteNum == 1) {
-                            image = right1;
-                        }
-                        if (spriteNum == 2) {
-                            image = right2;
-                        }
-                        break;
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                worldY - gp.tileSize < gp.player.worldY + gp.player.screenY &&
+                worldY + gp.tileSize > gp.player.worldY - gp.player.screenY) {
 
-                }
-
-                //Monster HP Bar
-                if (type == 2 && hpBarOn == true) {
-
-                    double oneScale = (double) gp.tileSize / maxLife;
-                    double hpBarValue = oneScale * life;
-
-                    g2.setColor(new Color(35, 35, 35));
-                    g2.fillRect(screenX - 1, screenY - 16, gp.tileSize + 2, 12);
-
-                    g2.setColor(new Color(255, 0, 30));
-                    g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
-                    hpBarCounter++;
-
-                    if (hpBarCounter > 600) {
-                        hpBarCounter = 0;
-                        hpBarOn = false;
+            switch (direction) {
+                case "up":
+                    if (spriteNum == 1) {
+                        image = up1;
                     }
-                }
+                    if (spriteNum == 2) {
+                        image = up2;
+                    }
+                    break;
+                case "down":
+                    if (spriteNum == 1) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2) {
+                        image = down2;
+                    }
+                    break;
+                case "left":
+                    if (spriteNum == 1) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2) {
+                        image = left2;
+                    }
+                    break;
+                case "right":
+                    if (spriteNum == 1) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2) {
+                        image = right2;
+                    }
+                    break;
 
-                if (invincible == true) {
-                    hpBarOn = true;
+            }
+
+            //Monster HP Bar
+            if (type == 2 && hpBarOn == true) {
+
+                double oneScale = (double) gp.tileSize / maxLife;
+                double hpBarValue = oneScale * life;
+
+                g2.setColor(new Color(35, 35, 35));
+                g2.fillRect(screenX - 1, screenY - 16, gp.tileSize + 2, 12);
+
+                g2.setColor(new Color(255, 0, 30));
+                g2.fillRect(screenX, screenY - 15, (int) hpBarValue, 10);
+                hpBarCounter++;
+
+                if (hpBarCounter > 600) {
                     hpBarCounter = 0;
-                    changeAlpha(g2, 0.4f);
-
+                    hpBarOn = false;
                 }
-                if (dying == true) {
-                    dyingAnimation(g2);
-                }
+            }
 
-                g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+            if (invincible == true) {
+                hpBarOn = true;
+                hpBarCounter = 0;
+                changeAlpha(g2, 0.4f);
+
+            }
+            if (dying == true) {
+                dyingAnimation(g2);
+            }
+
+            g2.drawImage(image, screenX, screenY, null);
 
 
-                changeAlpha(g2, 1f);
-            }
-        }
-
-        public void dyingAnimation (Graphics2D g2){
-            dyingCounter++;
-
-            int i = 5;
-            if (dyingCounter <= i) {
-                changeAlpha(g2, 0f);
-            }
-            if (dyingCounter > i && dyingCounter <= i * 2) {
-                changeAlpha(g2, 1f);
-            }
-            if (dyingCounter > i * 2 && dyingCounter <= i * 3) {
-                changeAlpha(g2, 0f);
-            }
-            if (dyingCounter > i * 3 && dyingCounter <= i * 4) {
-                changeAlpha(g2, 1f);
-            }
-            if (dyingCounter > i * 4 && dyingCounter <= i * 5) {
-                changeAlpha(g2, 0f);
-            }
-            if (dyingCounter > i * 5 && dyingCounter <= i * 6) {
-                changeAlpha(g2, 1f);
-            }
-            if (dyingCounter > i * 6 && dyingCounter <= i * 7) {
-                changeAlpha(g2, 0f);
-            }
-            if (dyingCounter > i * 7 && dyingCounter <= i * 8) {
-                changeAlpha(g2, 1f);
-            }
-            if (dyingCounter > i * 8) {
-
-                alive = false;
-            }
-        }
-
-        public void changeAlpha (Graphics2D g2,float alphaValue){
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
-        }
-
-        public BufferedImage setup (String imagePath,int width, int height){
-            UtilityTool uTool = new UtilityTool();
-            BufferedImage image = null;
-            try {
-                image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
-                image = uTool.scaleImage(image, width, height);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return image;
+            changeAlpha(g2, 1f);
         }
     }
+
+    public void dyingAnimation(Graphics2D g2) {
+        dyingCounter++;
+
+        int i = 5;
+        if (dyingCounter <= i) {
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter > i && dyingCounter <= i * 2) {
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i * 2 && dyingCounter <= i * 3) {
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter > i * 3 && dyingCounter <= i * 4) {
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i * 4 && dyingCounter <= i * 5) {
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter > i * 5 && dyingCounter <= i * 6) {
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i * 6 && dyingCounter <= i * 7) {
+            changeAlpha(g2, 0f);
+        }
+        if (dyingCounter > i * 7 && dyingCounter <= i * 8) {
+            changeAlpha(g2, 1f);
+        }
+        if (dyingCounter > i * 8) {
+
+            alive = false;
+        }
+    }
+
+    public void changeAlpha(Graphics2D g2, float alphaValue) {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    }
+
+    public BufferedImage setup(String imagePath, int width, int height) {
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
+            image = uTool.scaleImage(image, width, height);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+}
