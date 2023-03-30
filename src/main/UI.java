@@ -565,11 +565,13 @@ public class UI {
         g2.drawRect(textX - 96, textY, 120, 24);
         int volumeWidth = 24 * gp.music.volumeScale;
         g2.fillRect(textX - 96, textY, volumeWidth, 24);
-        //SE
+        //SE VOLUME
         textY += gp.tileSize;
         g2.drawRect(textX - 96, textY, 120, 24);
         volumeWidth = 24 * gp.se.volumeScale;
         g2.fillRect(textX - 96, textY, volumeWidth, 24);
+
+        gp.config.saveConfig();
     }
 
     public void options_fullScreenNotification(int frameX, int frameY) {
