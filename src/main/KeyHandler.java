@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     GamePanel gp;
-    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed,shotKeyPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, shotKeyPressed;
     //DEBUG
     boolean showDebugText = false;
 
@@ -43,6 +43,10 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.characterState) {
             characterState(code);
         }
+        //OPTIONSSTATE
+        else if (gp.gameState == gp.optionsState) {
+            optionsState(code);
+        }
     }
 
     public void titleState(int code) {
@@ -61,8 +65,9 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.ui.comandNum == 0) {
-                    gp.ui.titleScreenState = 1;
-
+//                    gp.ui.titleScreenState = 1;
+                        gp.gameState=gp.playState;
+                        gp.playMusic(0);
                 }
                 if (gp.ui.comandNum == 1) {
                     //add later
@@ -132,6 +137,9 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_F) {
             shotKeyPressed = true;
         }
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.optionsState;
+        }
 
         //DEBUG
         if (code == KeyEvent.VK_T) {
@@ -164,32 +172,88 @@ public class KeyHandler implements KeyListener {
             gp.gameState = gp.playState;
         }
         if (code == KeyEvent.VK_W) {
-            if(gp.ui.slotRow !=0){
+            if (gp.ui.slotRow != 0) {
                 gp.ui.slotRow--;
                 gp.playSE(9);
             }
 
         }
         if (code == KeyEvent.VK_A) {
-            if(gp.ui.slotCol !=0) {
+            if (gp.ui.slotCol != 0) {
                 gp.ui.slotCol--;
                 gp.playSE(9);
             }
         }
         if (code == KeyEvent.VK_S) {
-            if(gp.ui.slotRow !=3) {
+            if (gp.ui.slotRow != 3) {
                 gp.ui.slotRow++;
                 gp.playSE(9);
             }
         }
         if (code == KeyEvent.VK_D) {
-            if(gp.ui.slotCol !=4) {
+            if (gp.ui.slotCol != 4) {
                 gp.ui.slotCol++;
                 gp.playSE(9);
             }
         }
-        if(code == KeyEvent.VK_ENTER){
+        if (code == KeyEvent.VK_ENTER) {
             gp.player.selectItem();
+        }
+    }
+
+    public void optionsState(int code) {
+        if (code == KeyEvent.VK_ESCAPE) {
+            gp.gameState = gp.playState;
+        }
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
+        int maxComandNum = 0;
+        switch (gp.ui.subState) {
+            case 0:
+                maxComandNum = 5;break;
+            case 3:
+                maxComandNum = 1;break;
+        }
+        if (code == KeyEvent.VK_W) {
+            gp.ui.comandNum--;
+            gp.playSE(9);
+            if (gp.ui.comandNum < 0) {
+                gp.ui.comandNum = maxComandNum;
+            }
+        }
+        if (code == KeyEvent.VK_S) {
+            gp.ui.comandNum++;
+            gp.playSE(9);
+            if (gp.ui.comandNum > maxComandNum) {
+                gp.ui.comandNum = 0;
+            }
+        }
+        if (code == KeyEvent.VK_A) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.comandNum == 1 && gp.music.volumeScale > 0) {
+                    gp.music.volumeScale--;
+                    gp.music.checkVolume();
+                    gp.playSE(9);
+                }
+                if (gp.ui.comandNum == 2 && gp.se.volumeScale > 0) {
+                    gp.se.volumeScale--;
+                    gp.playSE(9);
+                }
+            }
+        }
+        if (code == KeyEvent.VK_D) {
+            if (gp.ui.subState == 0) {
+                if (gp.ui.comandNum == 1 && gp.music.volumeScale <5) {
+                    gp.music.volumeScale++;
+                    gp.music.checkVolume();
+                    gp.playSE(9);
+                }
+                if (gp.ui.comandNum == 2 && gp.se.volumeScale < 5) {
+                    gp.se.volumeScale++;
+                    gp.playSE(9);
+                }
+            }
         }
     }
 
