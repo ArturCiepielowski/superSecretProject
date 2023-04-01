@@ -43,9 +43,13 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.characterState) {
             characterState(code);
         }
-        //OPTIONSSTATE
+        //OPTIONS STATE
         else if (gp.gameState == gp.optionsState) {
             optionsState(code);
+        }
+        //GAME OVER STATE
+        else if (gp.gameState == gp.gameOverState) {
+            gameOverState(code);
         }
     }
 
@@ -66,8 +70,8 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.ui.comandNum == 0) {
 //                    gp.ui.titleScreenState = 1;
-                        gp.gameState=gp.playState;
-                        gp.playMusic(0);
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
                 }
                 if (gp.ui.comandNum == 1) {
                     //add later
@@ -150,7 +154,11 @@ public class KeyHandler implements KeyListener {
             }
         }
         if (code == KeyEvent.VK_R) {
-            gp.tileM.loadMap("/maps/worldV2.txt"); // nie dziala
+            switch(gp.currentMap){
+                case 0:gp.tileM.loadMap("/maps/worldV3.txt",0); // nie dziala
+                case 1:gp.tileM.loadMap("/maps/interior01.txt",1); // nie dziala
+            }
+
             System.out.println("dzieje sie");
         }
     }
@@ -211,9 +219,11 @@ public class KeyHandler implements KeyListener {
         int maxComandNum = 0;
         switch (gp.ui.subState) {
             case 0:
-                maxComandNum = 5;break;
+                maxComandNum = 5;
+                break;
             case 3:
-                maxComandNum = 1;break;
+                maxComandNum = 1;
+                break;
         }
         if (code == KeyEvent.VK_W) {
             gp.ui.comandNum--;
@@ -244,7 +254,7 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D) {
             if (gp.ui.subState == 0) {
-                if (gp.ui.comandNum == 1 && gp.music.volumeScale <5) {
+                if (gp.ui.comandNum == 1 && gp.music.volumeScale < 5) {
                     gp.music.volumeScale++;
                     gp.music.checkVolume();
                     gp.playSE(9);
@@ -253,6 +263,34 @@ public class KeyHandler implements KeyListener {
                     gp.se.volumeScale++;
                     gp.playSE(9);
                 }
+            }
+        }
+    }
+
+    public void gameOverState(int code) {
+        if (code == KeyEvent.VK_W) {
+            gp.ui.comandNum--;
+            if (gp.ui.comandNum < 0) {
+                gp.ui.comandNum = 1;
+            }
+            gp.playSE(9);
+        }
+        if (code == KeyEvent.VK_S) {
+            gp.ui.comandNum++;
+            if (gp.ui.comandNum > 1) {
+                gp.ui.comandNum = 0;
+            }
+            gp.playSE(9);
+        }
+        if(code ==KeyEvent.VK_ENTER){
+            if(gp.ui.comandNum==0){
+                gp.gameState=gp.playState;
+                gp.retry();
+                gp.playMusic(0);
+            }
+            else if (gp.ui.comandNum ==1){
+                gp.gameState=gp.titleState;
+                gp.restart();
             }
         }
     }
