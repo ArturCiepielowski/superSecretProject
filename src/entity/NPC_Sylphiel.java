@@ -3,12 +3,21 @@ package entity;
 import main.GamePanel;
 import object.*;
 
+import java.awt.*;
+
 public class NPC_Sylphiel extends Entity{
     public NPC_Sylphiel(GamePanel gp) {
         super(gp);
 
         direction = "down";
         speed = 1;
+        solidArea = new Rectangle();
+        solidArea.x=8;
+        solidArea.y=16;
+        solidAreaDefaultX=solidArea.x;
+        solidAreaDefaultY=solidArea.y;
+        solidArea.width=32;
+        solidArea.height=32;
         getImage();
         setDialogue();
         setItems();
@@ -41,6 +50,8 @@ public class NPC_Sylphiel extends Entity{
     }
 
     public void speak(){
-
+       super.speak();
+       gp.gameState=gp.tradeState;
+       gp.ui.npc=this;
     }
 }

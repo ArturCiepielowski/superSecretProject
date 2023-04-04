@@ -1,5 +1,6 @@
 package main;
 
+import entity.NPC_Sylphiel;
 import entity.NPC_Xellos;
 import monster.MON_GreenSlime;
 import object.*;
@@ -62,7 +63,8 @@ public class AssetSetter {
 
         //MAP 1
         mapNum =1;
-        gp.npc[mapNum][i] = new NPC_Xellos(gp);
+        i=0;
+        gp.npc[mapNum][i] = new NPC_Sylphiel(gp);
         gp.npc[mapNum][i].worldX = gp.tileSize * 12;
         gp.npc[mapNum][i].worldY = gp.tileSize * 7;
         i++;
