@@ -51,6 +51,10 @@ public class KeyHandler implements KeyListener {
         else if (gp.gameState == gp.gameOverState) {
             gameOverState(code);
         }
+        //TRADE STATE
+        else if (gp.gameState == gp.tradeState) {
+            tradeState(code);
+        }
     }
 
     public void titleState(int code) {
@@ -154,9 +158,11 @@ public class KeyHandler implements KeyListener {
             }
         }
         if (code == KeyEvent.VK_R) {
-            switch(gp.currentMap){
-                case 0:gp.tileM.loadMap("/maps/worldV3.txt",0); // nie dziala
-                case 1:gp.tileM.loadMap("/maps/interior01.txt",1); // nie dziala
+            switch (gp.currentMap) {
+                case 0:
+                    gp.tileM.loadMap("/maps/worldV3.txt", 0); // nie dziala
+                case 1:
+                    gp.tileM.loadMap("/maps/interior01.txt", 1); // nie dziala
             }
 
             System.out.println("dzieje sie");
@@ -282,15 +288,36 @@ public class KeyHandler implements KeyListener {
             }
             gp.playSE(9);
         }
-        if(code ==KeyEvent.VK_ENTER){
-            if(gp.ui.comandNum==0){
-                gp.gameState=gp.playState;
+        if (code == KeyEvent.VK_ENTER) {
+            if (gp.ui.comandNum == 0) {
+                gp.gameState = gp.playState;
                 gp.retry();
                 gp.playMusic(0);
-            }
-            else if (gp.ui.comandNum ==1){
-                gp.gameState=gp.titleState;
+            } else if (gp.ui.comandNum == 1) {
+                gp.gameState = gp.titleState;
                 gp.restart();
+            }
+        }
+    }
+
+    public void tradeState(int code) {
+        if (code == KeyEvent.VK_ENTER) {
+            enterPressed = true;
+        }
+        if (gp.ui.subState == 0) {
+            if (code == KeyEvent.VK_W) {
+                gp.ui.comandNum--;
+                if (gp.ui.comandNum < 0) {
+                    gp.ui.comandNum = 2;
+                }
+                gp.playSE(9);
+            }
+            if (code == KeyEvent.VK_S) {
+                gp.ui.comandNum++;
+                if (gp.ui.comandNum > 2) {
+                    gp.ui.comandNum = 0;
+                }
+                gp.playSE(9);
             }
         }
     }

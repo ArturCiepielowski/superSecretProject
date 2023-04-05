@@ -769,6 +769,42 @@ public class UI {
         gp.keyH.enterPressed=false;
     }
     public void trade_select(){
+        drawDialogueScreen();
+        //DRAW WINDOW
+        int x =gp.tileSize*15;
+        int y =gp.tileSize*4;
+        int width =gp.tileSize*3;
+        int height =(int)(gp.tileSize*3.5);
+        drawSubWindows(x,y,width,height);
+
+        //DRAW TEXTS
+        x+=gp.tileSize;
+        y+=gp.tileSize;
+        g2.drawString("Buy",x,y);
+        if(comandNum ==0 ){
+            g2.drawString(">",x-24,y);
+            if(gp.keyH.enterPressed==true){
+                subState=1;
+            }
+        }
+        y+=gp.tileSize;
+        g2.drawString("Sell",x,y);
+        if(comandNum ==1 ){
+            g2.drawString(">",x-24,y);
+            if(gp.keyH.enterPressed==true){
+                subState=2;
+            }
+        }
+        y+=gp.tileSize;
+        g2.drawString("Leave",x,y);
+        if(comandNum ==2 ){
+            g2.drawString(">",x-24,y);
+            if(gp.keyH.enterPressed==true){
+                comandNum=0;
+                gp.gameState=gp.dialogueState;
+                currentDialogue="Come again, dear.";
+            }
+        }
 
     }
     public void trade_buy(){
