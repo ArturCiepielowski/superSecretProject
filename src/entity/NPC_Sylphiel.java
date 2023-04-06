@@ -50,7 +50,12 @@ public class NPC_Sylphiel extends Entity{
     }
 
     public void speak(){
-       super.speak();
+//       super.speak(); // Fix so that merchant won't moove
+        if (dialogues[dialogueIndex] == null) {
+            dialogueIndex = 0;
+        }
+        gp.ui.currentDialogue = dialogues[dialogueIndex];
+        dialogueIndex++;
        gp.gameState=gp.tradeState;
        gp.ui.npc=this;
     }
