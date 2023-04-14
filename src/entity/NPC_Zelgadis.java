@@ -10,7 +10,7 @@ public class NPC_Zelgadis extends Entity{
         super(gp);
 
         direction = "down";
-        speed = 1;
+        speed = 2;
         solidArea = new Rectangle();
         solidArea.x=8;
         solidArea.y=16;
@@ -43,8 +43,10 @@ public class NPC_Zelgadis extends Entity{
 
     public void setAction() {
         if(onPath ==true){
-            int goalCol =12;
-            int goalRow=9;
+            int goalCol =(gp.player.worldX+gp.player.solidArea.x)/gp.tileSize; // chage that allows npc to follow player
+//            int goalCol =12;
+            int goalRow=(gp.player.worldY+gp.player.solidArea.y)/gp.tileSize;
+//            int goalRow=9;
 
             searchPath(goalCol,goalRow);
         }
