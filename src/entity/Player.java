@@ -46,7 +46,8 @@ public class Player extends Entity {
         worldY = gp.tileSize * 21;
 //        worldX = gp.tileSize * 12; HOUSE
 //        worldY = gp.tileSize * 13;
-        speed = 4;
+        defaultSpeed=4;
+        speed = defaultSpeed;
         direction = "down";
 
         //PLAYER STATUS
@@ -360,6 +361,9 @@ public class Player extends Entity {
         if (i != 999) {
             if (gp.monster[gp.currentMap][i].invincible == false) {
                 gp.playSE(5);
+
+                knockBack(gp.monster[gp.currentMap][i]);
+
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
                 if (damage < 0) {
                     damage = 0;
@@ -378,6 +382,11 @@ public class Player extends Entity {
                 }
             }
         }
+    }
+    public void knockBack (Entity entity){
+        entity.direction=direction;
+        entity.speed +=10;
+        entity.knockBack=true;
     }
     public void damageInteractiveTile(int i) {
         if (i != 999 && gp.iTile[gp.currentMap][i].destructible == true && gp.iTile[gp.currentMap][i].isCorrectItem(this) == true
