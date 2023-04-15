@@ -17,7 +17,8 @@ public class MON_GreenSlime extends Entity {
         this.gp = gp;
         type = type_monster;
         name = "Green Slime";
-        speed = 1;
+        defaultSpeed =1;
+        speed = defaultSpeed;
         maxLife = 4;
         life = maxLife;
         attack = 5;
@@ -46,51 +47,85 @@ public class MON_GreenSlime extends Entity {
 
     }
 
-    public void setAction() {
-        actionLockCounter++;
-        if (actionLockCounter == 120) {
-            Random random = new Random();
-            int i = random.nextInt(100) + 1;
-            if (i <= 25) {
-                direction = "up";
-            }
-            if (i > 25 && i <= 50) {
-                direction = "down";
-            }
-            if (i > 50 && i <= 75) {
-                direction = "down";
-            }
-            if (i > 75 && i <= 100) {
-                direction = "right";
-            }
-            actionLockCounter = 0;
+    public void update() {
+        super.update();
 
+        int xDistance = Math.abs(worldX - gp.player.worldX);
+        int yDistance = Math.abs(worldY - gp.player.worldY);
+        int tileDistance = (xDistance + yDistance) / gp.tileSize;
+
+        if (onPath == false && tileDistance < 5) {
+            int i = new Random().nextInt(100) + 1;
+            if (i > 50) {
+                onPath = true;
+            }
         }
-        int i = new Random().nextInt(100) + 1;
-        if (i > 99 && projectile.alive == false && shotAvaibleCounter == 30) {
-            projectile.set(worldX, worldY, direction,true,this);
-            gp.projectileList.add(projectile);
-            shotAvaibleCounter=0;
+//        if(onPath==true && tileDistance >20){
+//            onPath=false;
+//        }
+    }
+
+    public void setAction() {
+        if (onPath == true) {
+            int goalCol = (gp.player.worldX + gp.player.solidArea.x) / gp.tileSize; // chage that allows npc to follow player
+            int goalRow = (gp.player.worldY + gp.player.solidArea.y) / gp.tileSize;
+
+            searchPath(goalCol, goalRow);
+
+            int i = new Random().nextInt(200) + 1;
+            if (i > 197 && projectile.alive == false && shotAvaibleCounter == 30) {
+                projectile.set(worldX, worldY, direction, true, this);
+
+                //CHECK VACANCY
+                for(int ii=0;ii<gp.projectile[1].length;ii++){
+                    if(gp.projectile[gp.currentMap][ii]==null){
+                        gp.projectile[gp.currentMap][ii]=projectile;
+                        break;
+                    }
+                }
+                shotAvaibleCounter = 0;
+            }
+        } else {
+            actionLockCounter++;
+            if (actionLockCounter == 120) {
+                Random random = new Random();
+                int i = random.nextInt(100) + 1;
+                if (i <= 25) {
+                    direction = "up";
+                }
+                if (i > 25 && i <= 50) {
+                    direction = "down";
+                }
+                if (i > 50 && i <= 75) {
+                    direction = "left";
+                }
+                if (i > 75 && i <= 100) {
+                    direction = "right";
+                }
+                actionLockCounter = 0;
+            }
         }
+
     }
 
     public void damageReaction() {
         actionLockCounter = 0;
-        direction = gp.player.direction;
+//        direction = gp.player.direction;
+        onPath = true;
     }
 
-    public void checkDrop(){
+    public void checkDrop() {
         //CAST A DIE
-        int i = new Random().nextInt(100)+1;
+        int i = new Random().nextInt(100) + 1;
 
         //SET THE MONSTER DROP
-        if(i<50){
+        if (i < 50) {
             dropItem(new OBJ_Coin_Bronze(gp));
         }
-        if(i>=50 && i <75){
+        if (i >= 50 && i < 75) {
             dropItem(new OBJ_Heart(gp));
         }
-        if(i>=75 && i <100){
+        if (i >= 75 && i < 100) {
             dropItem(new OBJ_ManaCrystal(gp));
         }
 

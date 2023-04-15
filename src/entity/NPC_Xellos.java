@@ -1,12 +1,8 @@
 package entity;
 
 import main.GamePanel;
-import main.UtilityTool;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 import java.util.Random;
 
 public class NPC_Xellos extends Entity {
@@ -59,7 +55,7 @@ public class NPC_Xellos extends Entity {
                 direction = "down";
             }
             if (i > 50 && i <= 75) {
-                direction = "down";
+                direction = "left";
             }
             if (i > 75 && i <= 100) {
                 direction = "right";
