@@ -121,6 +121,17 @@ public class Player extends Entity {
         right2 = setup("/player/GourryRightWalking", gp.tileSize, gp.tileSize);//boy_right_2
     }
 
+    public void getSleepingImage(BufferedImage image) {
+        up1 = image;
+        up2 = image;
+        down1 = image;
+        down2 = image;
+        left1 = image;
+        left2 = image;
+        right1 = image;
+        right2 = image;
+    }
+
     public void getPlayerAttackImage() {
 
         if (currentWeapon.type == type_sword) {
@@ -339,7 +350,7 @@ public class Player extends Entity {
             else {
                 String text;
 
-                if (canObtainItem(gp.obj[gp.currentMap][i])==true) {
+                if (canObtainItem(gp.obj[gp.currentMap][i]) == true) {
                     gp.playSE(1);
                     text = "Got a " + gp.obj[gp.currentMap][i].name + "!";
                 } else {
@@ -465,21 +476,19 @@ public class Player extends Entity {
                 currentShield = selectedItem;
                 defense = getDefense();
             }
-            if(selectedItem.type==type_light){
-                if(currentLight==selectedItem){
-                    currentLight=null;
-                }
-                else{
-                    currentLight=selectedItem;
+            if (selectedItem.type == type_light) {
+                if (currentLight == selectedItem) {
+                    currentLight = null;
+                } else {
+                    currentLight = selectedItem;
                 }
                 lightUpdated = true;
             }
             if (selectedItem.type == type_consumable) {
                 if (selectedItem.use(this) == true) {
-                    if(selectedItem.amount>1){
+                    if (selectedItem.amount > 1) {
                         selectedItem.amount--;
-                    }
-                    else{
+                    } else {
                         inventory.remove(itemIndex);
                     }
                 }
@@ -509,16 +518,15 @@ public class Player extends Entity {
                 inventory.get(index).amount++;
                 canObtain = true;
             } else { //New item so need to check vacancy
-                if (inventory.size() != maxInventorySize){
+                if (inventory.size() != maxInventorySize) {
                     inventory.add(item);
-                    canObtain =true;
+                    canObtain = true;
                 }
             }
-        }
-        else{ //NOT STACKABLE so check vacancy
-            if (inventory.size() != maxInventorySize){
+        } else { //NOT STACKABLE so check vacancy
+            if (inventory.size() != maxInventorySize) {
                 inventory.add(item);
-                canObtain =true;
+                canObtain = true;
             }
         }
         return canObtain;
