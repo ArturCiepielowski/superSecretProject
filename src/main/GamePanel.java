@@ -5,6 +5,7 @@ import entity.Entity;
 import entity.NPC_Xellos;
 import entity.Player;
 
+import enviroment.EnviromentManager;
 import tile.TileMenager;
 import tile_interactive.InteractiveTile;
 
@@ -50,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable {
     public EventHandler eHandler = new EventHandler(this);
     Config config = new Config(this);
     public PathFinder pFinder= new PathFinder(this);
+    EnviromentManager eManager= new EnviromentManager(this);
     Thread gameThread;
 
     //ENTITY AND OBJECT
@@ -91,6 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         aSetter.setInteractiveTile();
+        eManager.setup();
 //        playMusic(0);
         gameState = titleState;
 
@@ -211,6 +214,7 @@ public class GamePanel extends JPanel implements Runnable {
                     iTile[currentMap][i].update();
                 }
             }
+            eManager.update();
         }
         if (gameState == pauseState) {
             //nothing
@@ -288,7 +292,8 @@ public class GamePanel extends JPanel implements Runnable {
             //EMPTY ENTITY LIST
 
             entityList.clear();
-
+            //ENVIROMENT
+            eManager.draw(g2);
 
             //UI
             ui.draw(g2);
