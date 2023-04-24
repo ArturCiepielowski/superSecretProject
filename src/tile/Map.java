@@ -39,6 +39,7 @@ public class Map extends TileMenager{
                     row++;
                 }
             }
+            g2.dispose();
         }
     }
     public void drawFullMapScreen(Graphics2D g2){
