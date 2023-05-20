@@ -83,7 +83,9 @@ public class KeyHandler implements KeyListener {
                     gp.playMusic(0);
                 }
                 if (gp.ui.comandNum == 1) {
-                    //add later
+                    gp.saveLoad.load();
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
                 }
                 if (gp.ui.comandNum == 2) {
                     System.exit(0);

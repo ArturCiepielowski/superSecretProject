@@ -1,6 +1,7 @@
 package main;
 
 import ai.PathFinder;
+import data.SaveLoad;
 import entity.Entity;
 import entity.NPC_Xellos;
 import entity.Player;
@@ -54,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public PathFinder pFinder= new PathFinder(this);
     EnviromentManager eManager= new EnviromentManager(this);
     Map map =new Map(this);
+    SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     //ENTITY AND OBJECT
