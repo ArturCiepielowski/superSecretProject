@@ -89,9 +89,9 @@ public class Player extends Entity {
         mana = maxMana;
         invincible = false;
         transparent = false;
-        attacking =false;
-        guarding=false;
-        knockBack=false;
+        attacking = false;
+        guarding = false;
+        knockBack = false;
         lightUpdated = true;
         speed = defaultSpeed;
     }
@@ -113,6 +113,25 @@ public class Player extends Entity {
 
     public int getDefense() {
         return defense = dexterity * currentShield.defenseValue;
+    }
+
+    public int getCurrentWeaponSlot() {
+        int currentWeaponSlot = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if(inventory.get(i)==currentWeapon){
+                currentWeaponSlot=i;
+            }
+        }
+        return currentWeaponSlot;
+    }
+    public int getCurrentShieldSlot() {
+        int currentShieldSlot = 0;
+        for (int i = 0; i < inventory.size(); i++) {
+            if(inventory.get(i)==currentShield){
+                currentShieldSlot=i;
+            }
+        }
+        return currentShieldSlot;
     }
 
     public void getImage() {
@@ -213,15 +232,12 @@ public class Player extends Entity {
                         break;
                 }
             }
-        }
-        else if (attacking == true) {
+        } else if (attacking == true) {
             attacking();
-        }
-        else if (keyH.spacePressed == true) {
+        } else if (keyH.spacePressed == true) {
             guarding = true;
             guardCounter++;
-        }
-        else if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true ||
+        } else if (keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true ||
                 keyH.rightPressed == true || keyH.enterPressed == true) {
             if (keyH.upPressed == true) {
                 direction = "up";
@@ -406,8 +422,8 @@ public class Player extends Entity {
                 if (knockBackPower > 0) {
                     setKnockBack(gp.monster[gp.currentMap][i], attacker, knockBackPower);
                 }
-                if(gp.monster[gp.currentMap][i].offBalance==true){
-                    attack*=5;
+                if (gp.monster[gp.currentMap][i].offBalance == true) {
+                    attack *= 5;
                 }
 
                 int damage = attack - gp.monster[gp.currentMap][i].defense;
