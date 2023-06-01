@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class UI {
     GamePanel gp;
     Graphics2D g2;
-    Font eagleLake_40, eagleLake_80B;
+   public Font eagleLake_40, eagleLake_80B;
     BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank, coin;
     public boolean messageOn = false;
     //    public String message = "";
@@ -112,6 +112,10 @@ public class UI {
         // TRADE STATE
         if (gp.gameState == gp.tradeState) {
             drawTradeScreen();
+        }
+        // SLEEP STATE
+        if (gp.gameState == gp.sleepState) {
+            drawSleepScreen();
         }
     }
 
@@ -448,8 +452,8 @@ public class UI {
 
             //EQUIP CURSOR
             if (entity.inventory.get(i) == entity.currentWeapon ||
-                    entity.inventory.get(i) == entity.currentShield||
-                    entity.inventory.get(i)==entity.currentLight) {
+                    entity.inventory.get(i) == entity.currentShield ||
+                    entity.inventory.get(i) == entity.currentLight) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
             }
@@ -773,6 +777,7 @@ public class UI {
             if (gp.keyH.enterPressed == true) {
                 subState = 0;
                 gp.gameState = gp.titleState;
+                gp.resetGame(true);
             }
         }
         //NO
@@ -978,6 +983,27 @@ public class UI {
                     }
                     gp.player.coin += price;
                 }
+            }
+        }
+    }
+
+    public void drawSleepScreen() {
+        counter++;
+        if (counter < 120) {
+            gp.eManager.lighting.filterAlpha += 0.01f;
+            if (gp.eManager.lighting.filterAlpha > 1f) {
+                gp.eManager.lighting.filterAlpha = 1f;
+            }
+        }
+        if (counter >= 120) {
+            gp.eManager.lighting.filterAlpha -= 0.01f;
+            if (gp.eManager.lighting.filterAlpha <= 0) {
+                gp.eManager.lighting.filterAlpha = 0f;
+                counter =0;
+                gp.eManager.lighting.dayState = gp.eManager.lighting.day;
+                gp.eManager.lighting.dayCounter=0;
+                gp.gameState=gp.playState;
+                gp.player.getImage();
             }
         }
     }

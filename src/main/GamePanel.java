@@ -1,11 +1,13 @@
 package main;
 
 import ai.PathFinder;
+import data.SaveLoad;
 import entity.Entity;
 import entity.NPC_Xellos;
 import entity.Player;
 
 import enviroment.EnviromentManager;
+import tile.Map;
 import tile.TileMenager;
 import tile_interactive.InteractiveTile;
 
@@ -52,6 +54,8 @@ public class GamePanel extends JPanel implements Runnable {
     Config config = new Config(this);
     public PathFinder pFinder= new PathFinder(this);
     EnviromentManager eManager= new EnviromentManager(this);
+    Map map =new Map(this);
+    SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;
 
     //ENTITY AND OBJECT
@@ -77,6 +81,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int gameOverState = 6;
     public final int transitionState = 7;
     public final int tradeState = 8;
+    public final int sleepState = 9;
+    public final int mapState = 10;
 
 
     public GamePanel() {
@@ -104,24 +110,20 @@ public class GamePanel extends JPanel implements Runnable {
             setFullScreen();
         }
     }
-
-    public void retry() {
+    public void resetGame(boolean restart){
         player.setDefaultPositions();
-        player.restoreLifeAndMana();
+        player.restoreStatus();
         aSetter.setNPC();
         aSetter.setMonster();
+
+        if(restart==true){
+            player.setDefaultValues();
+            aSetter.setObject();
+            aSetter.setInteractiveTile();
+            eManager.lighting.resetDay();
+        }
     }
 
-    public void restart() {
-        player.setDefaultValues();
-        player.setDefaultPositions();
-        player.restoreLifeAndMana();
-        player.setItems();
-        aSetter.setObject();
-        aSetter.setNPC();
-        aSetter.setMonster();
-        aSetter.setInteractiveTile();
-    }
 
     public void setFullScreen() {
         //GET LOCAL SCREEN DEVICE
@@ -234,6 +236,10 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == titleState) {
             ui.draw(g2);
         }
+        //MAP SCREEN
+        else if(gameState==mapState){
+            map.drawFullMapScreen(g2);
+        }
         //OTHERS
         else {
 
@@ -294,6 +300,8 @@ public class GamePanel extends JPanel implements Runnable {
             entityList.clear();
             //ENVIROMENT
             eManager.draw(g2);
+            //MINI MAP
+            map.drawMiniMap(g2);
 
             //UI
             ui.draw(g2);

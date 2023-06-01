@@ -4,6 +4,7 @@ import entity.NPC_Sylphiel;
 import entity.NPC_Xellos;
 import entity.NPC_Zelgadis;
 import monster.MON_GreenSlime;
+import monster.MON_Orc;
 import object.*;
 import tile_interactive.IT_DryTree;
 
@@ -27,6 +28,10 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldY = gp.tileSize * 19;
         i++;
         gp.obj[mapNum][i] = new OBJ_Lantern(gp);
+        gp.obj[mapNum][i].worldX = gp.tileSize * 19;
+        gp.obj[mapNum][i].worldY = gp.tileSize * 20;
+        i++;
+        gp.obj[mapNum][i] = new OBJ_Tent(gp);
         gp.obj[mapNum][i].worldX = gp.tileSize * 18;
         gp.obj[mapNum][i].worldY = gp.tileSize * 20;
         i++;
@@ -66,7 +71,8 @@ public class AssetSetter {
         gp.obj[mapNum][i].worldX = gp.tileSize * 12;
         gp.obj[mapNum][i].worldY = gp.tileSize * 12;
         i++;
-        gp.obj[mapNum][i] = new OBJ_Chest(gp,new OBJ_Key(gp));
+        gp.obj[mapNum][i] = new OBJ_Chest(gp);
+        gp.obj[mapNum][i].setLoot(new OBJ_Key(gp));
         gp.obj[mapNum][i].worldX = gp.tileSize * 37;
         gp.obj[mapNum][i].worldY = gp.tileSize * 9;
 
@@ -125,6 +131,10 @@ public class AssetSetter {
         gp.monster[mapNum][i] = new MON_GreenSlime(gp);
         gp.monster[mapNum][i].worldX = gp.tileSize * 33;
         gp.monster[mapNum][i].worldY = gp.tileSize * 43;
+        i++;
+        gp.monster[mapNum][i] = new MON_Orc(gp);
+        gp.monster[mapNum][i].worldX = gp.tileSize * 12;
+        gp.monster[mapNum][i].worldY = gp.tileSize * 33;
 
     }
     public void setInteractiveTile(){
